@@ -1,4 +1,4 @@
-# qpl_core.py
+# /core/qplay_core.py
 
 import numpy as np
 from math import pi
