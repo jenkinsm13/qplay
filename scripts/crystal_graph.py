@@ -13,9 +13,9 @@ base_freq = np.pi
 
 plt.clf()
 plt.plot(t, y, c='red', label='Source Wave')
-plt.plot(t, Crystal.rose_quartz(t), c='pink', label='Rose Quartz')
-plt.plot(t, Crystal.citrine(t), c='yellow', label='Citrine') 
-plt.plot(t, Crystal.amethyst(t), c='purple', label='Amethyst')
+plt.plot(t, Crystal.rose_quartz(t, 1), c='pink', label='Rose Quartz')
+plt.plot(t, Crystal.citrine(t, 1), c='yellow', label='Citrine') 
+plt.plot(t, Crystal.amethyst(t, 1), c='purple', label='Amethyst')
 plt.plot(t, Emotion.joy(y, t), c='aqua', label='Joy')
 plt.plot(t, Emotion.sadness(y, t), c='blue', label='Sadness') 
 # plt.plot(t, Emotion.fear_filter(y, t), c='maroon', label='Fear')

@@ -112,6 +112,7 @@ class Emotion(Block):
         # Implementation for perceiving vitality-related events
         pass
 
+    @staticmethod
     def vigor(y, t):
         return y * (np.sin(t) + 1)
     

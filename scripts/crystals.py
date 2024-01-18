@@ -1,6 +1,6 @@
 # /blocks/qplay_crystals.py
 
-from blocks import HyperBlock
+from blocks import HyperBlock, Agent
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import *
@@ -25,6 +25,9 @@ class Crystal(HyperBlock):
         # Establish a connection between two Crystals
         # Enable potential interactions and information exchange
         pass
+
+    def get_waveform(self, t):
+        return self.wave_function(t)
 
     @staticmethod
     # Agate - balance, stability
@@ -292,19 +295,17 @@ class CrystalChannel(Crystal):
         """Invoke held crystal on waveform t"""
         filtered_t = crystal[self.crystal](t)
         return filtered_t
+    
+    def get_waveform(self, t):
+        return self.crystal.get_waveform(t)
 
-class CrystalGrid(Crystal):
+class CrystalGrid(Agent):
     "Constructs crystal arrangements"  
   
-    def __init__(self, size, crystals):
-        super().__init__(f"Grid {size}") 
+    def __init__(self, size, crystals, name="Crystal Grid"):
+        super().__init__(name)
         self.size = size
         self.crystals = crystals
-        self.positions = self._map_to_grid()
-
-    def _entangle_waves(self, waves, positions): 
-        """Simple additive blending as example"""
-        return sum(waves)
 
     def _map_grid(self):
         """Assign crystal positions"""
@@ -317,7 +318,6 @@ class CrystalGrid(Crystal):
         return crystal_to_position, slot_to_crystal
 
     # Circular Grid and Wave Positioning
-
     def place_crystals_on_grid(self, num_crystals, t, emotion_filter):
         """Place crystals in an evenly spaced circular grid."""
         angles = np.linspace(0, 2 * np.pi, num_crystals, endpoint=False)
@@ -331,7 +331,6 @@ class CrystalGrid(Crystal):
         return np.sqrt(x**2 + y**2)
 
     # Wave Combination Based on Position
-
     def combine_crystals_based_on_position(self, waves, positions):
         """Combine waves based on their positions."""
         combined_wave = np.zeros_like(waves[0])
@@ -343,8 +342,8 @@ class CrystalGrid(Crystal):
         return combined_wave
 
     # Combining Multiple Waveforms
-
-    def combine_crystals(self, method, crystals, positions):
+    def combine_crystals(self, method, crystals, positions, waves):
+        
     # Combine crystals based on specified method
         if method == 'additive':
             return self._additive_blend(crystals, positions)
@@ -372,9 +371,9 @@ class CrystalGrid(Crystal):
         
     def _interference_pattern(self, waves):
         """Superpose like sound/light waves"""  
-        x = np.linspace(-2, 2, 1000)
-        z = sum([np.sin(5 * np.linalg.norm([x_i, z_i])) 
-                 for x_i, z_i in self.positions.values()]) 
+        x = np.linspace(-np.pi, np.pi, 1024)
+        z = sum([np.sin(5 * np.linalg.norm([x_i, wave])) 
+                 for x_i, wave in zip(x, waves)]) 
         return z
 
     def combine_multiple_waves(self, crystal_functions, t, energy_level, method, num_crystals=9):
@@ -382,17 +381,19 @@ class CrystalGrid(Crystal):
         crystals = [crystal_function(t, energy_level) for crystal_function in crystal_functions]
         return self.combine_waves(method, crystals, positions)
     
-    def get_waveform(self, t, method, crystal_waves=None):
+    def get_waveform(self, t, method):
         """
         Orchestrating method:
             1. Gets individual crystal waves  
             2. Combines them as a composite grid waveform  
             3. Returns final waveform
         """
-        if crystal_waves is None:
-            crystal_waves = {crystal: wave for crystal, wave in zip(self.crystals, self.waves)}
+        waves = []
+        for crystal in self.crystals:
+            # Get wavefrom each crystal instance 
+            wave = crystal.get_waveform(t) 
+            waves.append(wave)
 
-        waves = [f(t) for name, f in crystal_waves.items()]
-        positions = self.place_crystals_on_grid(len(crystal_waves))
+        positions = self.place_crystals_on_grid(len(waves))    
 
         return self.combine_crystals(method, waves, positions)
