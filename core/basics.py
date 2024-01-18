@@ -1,32 +1,32 @@
 # /core/qplay_basics.py
 
-from qplay_core import *
-import qplay_blocks as qpl
-from qplay_blocks import Block, Agent
+from core.core import *
+import blocks.blocks as qpl
+from blocks.blocks import Block, Agent
 import datetime
 import math
 
-class Data(qpl.Block): # Represents quantum data, possibly using qubits or other quantum information representations.
+class Data(Block): # Represents quantum data, possibly using qubits or other quantum information representations.
     def __init__(self, name, chain, thought_vector=None):
         super().__init__(name, chain, thought_vector)
         self.update_history(f"Data Block {name} created.")
 
-class Gate(qpl.Block): # Represents a quantum gate or operation that can be applied to DataBlocks.
+class Gate(Block): # Represents a quantum gate or operation that can be applied to DataBlocks.
     def __init__(self, name, chain, thought_vector=None):
         super().__init__(name, chain, thought_vector)
         self.update_history(f"Gate {name} created.")
 
-class State(qpl.Block):  # Encodes a specific quantum state, which could be a superposition or entangled state.
+class State(Block):  # Encodes a specific quantum state, which could be a superposition or entangled state.
     def __init__(self, name, chain, thought_vector=None):
         super().__init__(name, chain, thought_vector)
         self.update_history(f"State {name} created.")
 
-class Environment(qpl.Block): # Models an environment, which could influence the states or behaviors of other Blocks.
+class Environment(Block): # Models an environment, which could influence the states or behaviors of other Blocks.
     def __init__(self, name, chain, thought_vector=None):
         super().__init__(name, chain, thought_vector)
         self.update_history(f"Environment {name} created.")
 
-class Memory(qpl.Block): # Stores information or history, potentially used by Agents for learning or decision-making.
+class Memory(Block): # Stores information or history, potentially used by Agents for learning or decision-making.
     def __init__(self, name, chain, thought_vector=None):
         super().__init__(name, chain, thought_vector)
         self.update_history(f"Memory {name} created.")
@@ -42,27 +42,27 @@ Dynamic System Evolution: The interactions between agents and blocks could lead 
 Visualization and Analysis Tools: Given the complexity of such a system, tools for visualizing the state of the system and analyzing agent and block interactions are essential.
 """
 
-class Observer(qpl.Agent): # An agent responsible for observing and measuring Blocks, collapsing superpositions into definite states.
+class Observer(Agent): # An agent responsible for observing and measuring Blocks, collapsing superpositions into definite states.
     def __init__(self, name, chain, thought_vector=None):
         super().__init__(name, chain, thought_vector)
         self.update_history(f"Observer {name} created.")
 
-class Interaction(qpl.Agent): # Manages interactions between different Blocks, simulating quantum entanglement or other quantum phenomena.
+class Interaction(Agent): # Manages interactions between different Blocks, simulating quantum entanglement or other quantum phenomena.
     def __init__(self, name, chain, thought_vector=None):
         super().__init__(name, chain, thought_vector)
         self.update_history(f"Interaction {name} created.")
 
-class Learning(qpl.Agent): # Utilizes machine learning algorithms to evolve its behavior based on the history and states of Blocks.
+class Learning(Agent): # Utilizes machine learning algorithms to evolve its behavior based on the history and states of Blocks.
     def __init__(self, name, chain, thought_vector=None):
         super().__init__(name, chain, thought_vector)
         self.update_history(f"ML model {name} created.")
 
-class Simulation(qpl.Agent): # Runs simulations and predicts outcomes based on the states and dynamics of Blocks.
+class Simulation(Agent): # Runs simulations and predicts outcomes based on the states and dynamics of Blocks.
     def __init__(self, name, chain, thought_vector=None):
         super().__init__(name, chain, thought_vector)
         self.update_history(f"Simulation {name} created.")
 
-class Communication(qpl.Agent): # Handles the transfer of information between different Blocks or agents, potentially using quantum teleportation concepts.
+class Communication(Agent): # Handles the transfer of information between different Blocks or agents, potentially using quantum teleportation concepts.
     def __init__(self, name, chain, thought_vector=None):
         super().__init__(name, chain, thought_vector)
         self.update_history(f"Communication {name} created.")

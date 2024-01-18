@@ -1,12 +1,12 @@
 # /toys/qplay_toys.py
 
-import qplay_blocks
+import blocks
 import ipywidgets as widgets
 from IPython.display import display
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-import qplay_emotions
+import emotions
 import inspect
 
 class QuantumToy(Block):

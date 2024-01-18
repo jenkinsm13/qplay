@@ -1,6 +1,6 @@
 # /core/qplay_algorithms.py
 
-from qplay_core import *
+from core.core import *
 import numpy as np
 
 def grovers_algorithm(register, target):

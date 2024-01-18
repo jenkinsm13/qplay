@@ -1,7 +1,7 @@
 # /blocks/qplay_emotions.py
 
-from qplay_core import *
-from qplay_blocks import Block
+from core import *
+from blocks.blocks import Block
 import numpy as np
 from scipy.signal import savgol_filter
 import scipy.signal as signal

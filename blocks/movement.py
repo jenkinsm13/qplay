@@ -2,8 +2,8 @@
 
 import math
 import numpy as np
-import qplay_blocks
-from qplay_blocks import Block, Agent
+import blocks.blocks as blocks
+from blocks.blocks import Block, Agent
 
 class Movement(Block):
     """

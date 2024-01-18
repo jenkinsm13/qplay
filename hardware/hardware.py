@@ -1,6 +1,6 @@
 # /hardware/qplay_hardware.py
 
-from qplay_core import *
+from core import *
 import cirq
 import xanadu
 

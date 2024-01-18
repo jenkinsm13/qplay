@@ -1,7 +1,7 @@
 # /blocks/qplay_equations.py
 
 import sympy as sp
-from qplay_blocks import *
+from blocks.blocks import *
 from sympy import symbols, Function, Sum, Derivative, Integral
 
 class Equation(Block):

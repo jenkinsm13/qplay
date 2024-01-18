@@ -5,7 +5,7 @@ import inspect
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
-from qplay_blocks import *
+from blocks import *
 from IPython.display import display, clear_output
 from mpl_toolkits.mplot3d import Axes3D
 
