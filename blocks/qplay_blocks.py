@@ -1,4 +1,4 @@
-# qpl_blocks.py
+# /blocks/qplay_blocks.py
 
 import numpy as np
 import random
