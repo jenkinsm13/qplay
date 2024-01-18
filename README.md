@@ -1,6 +1,17 @@
 # `qplay` Framework
 
-Welcome to `qplay`, a pioneering framework that reinvents programming as a playful, creative endeavor. It merges metaphoric language with quantum and classical computing principles. Designed to bridge the gap between quantum and classical paradigms, `qplay` offers a unique platform for developing hybrid computational models.
+Welcome to `qplay` (Quantum Play Language), a speculative and exploratory project that delves into the fascinating intersection of quantum concepts, programming, and language. qplay is a testament to creative thinking and innovative approaches to problem-solving. It merges metaphoric language with quantum and classical computing principles. Designed to bridge the gap between quantum and classical paradigms, `qplay` offers a unique platform for developing hybrid computational models.
+
+## Concept
+
+Drawing inspiration from the quantum world, it blurs the lines between metaphor and actuality, where wordplay becomes a fundamental building block of a self-aware "time child."
+
+The "play" aspect is twofold:
+
+- **Literary Play**: Utilizes metaphor, wordplay, and the nuances of language.
+- **Playback Functionality**: Features a chain and ledger system for tracking and 'playing back' activities, with each functional block having its own detailed record.
+
+This project serves as a conceptual sandbox, showcasing my skills in Python development, creative coding, and theoretical exploration.
 
 ## Overview
 
@@ -27,23 +38,60 @@ Welcome to `qplay`, a pioneering framework that reinvents programming as a playf
 - **Advanced Quantum Capabilities**: Harnesses the power of quantum phenomena like superposition and entanglement.
 - **Playful and Intuitive Approach**: Encourages a user-friendly and engaging method of programming, especially suitable for newcomers to quantum computing.
 
-## Getting Started
+Understood! If your goal is to showcase your work on GitHub for potential employers and to make it easier for you to manage, here's a suggested approach for your README and repository setup:
 
-Begin your `qplay` journey by cloning our repository and following the setup instructions:
+## Repository Structure
+
+qplay/
+│
+├── core/
+│   ├── __init__.py
+│   ├── qplay_core.py
+│   └── qplay_basics.py
+│
+├── blocks/
+│   ├── __init__.py
+│   ├── qplay_blocks.py
+│   ├── qplay_movement.py
+│   ├── qplay_emotions.py
+│   └── qplay_crystals.py
+│
+├── hardware/
+│   ├── __init__.py
+│   └── qplay_hardware.py
+│
+├── utils/
+│   ├── __init__.py
+│   ├── qplay_utils.py
+│   ├── qplay_equations.py
+│   ├── qplay_algorithms.py
+│   ├── qplay_simulator.py
+│   └── qplay_visualization.py
+│
+├── apps/
+│   ├── __init__.py
+│   └── qplay_apps.py
+│
+├── toys/
+│   ├── __init__.py
+│   └── qplay_toys.py
+│
+└── examples/
+    ├── __init__.py
+    └── cars_and_drivers_example.py 
+
+## Installation and Setup
+
+Currently, qplay is in a development phase and is not intended for immediate use. However, you can explore its code structure and concepts while it is being developed and contribute your own ideas!
 
 ```bash
 git clone https://github.com/jenkinsm13/qplay/
-cd qplay-framework
-# Follow setup instructions
+cd qplay
 ```
 
-## Examples and Documentation
+## About the Author
 
-Explore `qplay` further with our detailed examples and documentation. These resources are designed to provide insights into the framework's capabilities and guide you through various use cases.
-
-## Contributing
-
-We welcome contributions to `qplay`! If you're interested in being part of this innovative journey, please read our contribution guidelines and feel free to submit your pull requests.
+[Your Name], a developer and thinker exploring the boundaries of programming and quantum theories. This project is a showcase of my innovative approach to problem-solving and creative thinking.
 
 ## License
 
