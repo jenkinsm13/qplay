@@ -38,17 +38,42 @@ This project serves as a conceptual sandbox, showcasing my skills in Python deve
 - **Advanced Quantum Capabilities**: Harnesses the power of quantum phenomena like superposition and entanglement.
 - **Playful and Intuitive Approach**: Encourages a user-friendly and engaging method of programming, especially suitable for newcomers to quantum computing.
 
-Understood! If your goal is to showcase your work on GitHub for potential employers and to make it easier for you to manage, here's a suggested approach for your README and repository setup:
-
 ## Repository Structure
 
-- `core/`
-- `blocks/`
-- `hardware/`
-- `utils/`
-- `apps/`
-- `toys/`
-- `examples/`
+This repository is organized into several directories, each serving a distinct purpose in the qplay ecosystem:
+
+### `core/`
+Contains the foundational code modules that define the basic principles and mechanics of qplay. It includes the main logic, data structures, and algorithms that form the bedrock of the framework.
+
+### `blocks/`
+Houses the modules responsible for creating and managing the "blocks" or "agents" in qplay. These blocks are the dynamic components that interact, connect, and evolve to form complex systems within the qplay universe.
+
+### `hardware/`
+Includes abstractions and interfaces for interacting with physical or virtual hardware. This allows qplay to extend beyond the digital realm and interact with external devices and sensors.
+
+### `utils/`
+Provides utility functions and helper tools that facilitate various operations within qplay. From mathematical computations to data manipulation, these utilities support the core functionality.
+
+### `apps/`
+Contains applications built using qplay. These are more complex examples of how the core and blocks can be utilized to create fully-fledged applications with specific purposes.
+
+### `toys/`
+Features playful and experimental modules that showcase the creative and fun aspects of qplay. These are less formal and more exploratory in nature, allowing for a sandbox-like experience.
+
+### `examples/`
+A collection of illustrative examples and tutorials demonstrating how to use qplay. This directory serves as a learning resource and a starting point for users to understand how to implement and interact with qplay.
+
+## License
+
+qplay is licensed under [Specify License Here], which ensures that the framework remains free and open-source while protecting the original creator's rights.
+
+## Contributing
+
+We welcome contributions from the community. Whether it's improving the documentation, adding new features, or reporting bugs, please feel free to make your mark on qplay.
+
+## Contact
+
+For any inquiries or discussions related to qplay, please reach out to [jenkinsm@gmail.com](mailto:jenkinsm@gmail.com).
 
 ## Installation and Setup
 
@@ -61,7 +86,7 @@ cd qplay
 
 ## About the Author
 
-[Your Name], a developer and thinker exploring the boundaries of programming and quantum theories. This project is a showcase of my innovative approach to problem-solving and creative thinking.
+Mike Jenkins, a developer and thinker exploring the intersection of intelligence, computing, and quantum theories. This project is intended to showcase my innovative use of problem solving and creative thinking.
 
 ## License
 
