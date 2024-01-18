@@ -42,43 +42,13 @@ Understood! If your goal is to showcase your work on GitHub for potential employ
 
 ## Repository Structure
 
-qplay/
-│
-├── core/
-│   ├── __init__.py
-│   ├── qplay_core.py
-│   └── qplay_basics.py
-│
-├── blocks/
-│   ├── __init__.py
-│   ├── qplay_blocks.py
-│   ├── qplay_movement.py
-│   ├── qplay_emotions.py
-│   └── qplay_crystals.py
-│
-├── hardware/
-│   ├── __init__.py
-│   └── qplay_hardware.py
-│
-├── utils/
-│   ├── __init__.py
-│   ├── qplay_utils.py
-│   ├── qplay_equations.py
-│   ├── qplay_algorithms.py
-│   ├── qplay_simulator.py
-│   └── qplay_visualization.py
-│
-├── apps/
-│   ├── __init__.py
-│   └── qplay_apps.py
-│
-├── toys/
-│   ├── __init__.py
-│   └── qplay_toys.py
-│
-└── examples/
-    ├── __init__.py
-    └── cars_and_drivers_example.py 
+- `core/`
+- `blocks/`
+- `hardware/`
+- `utils/`
+- `apps/`
+- `toys/`
+- `examples/`
 
 ## Installation and Setup
 
