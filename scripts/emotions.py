@@ -33,17 +33,17 @@ class Emotion(Block):
         # Implementation for perceiving positive events
         pass
 
-    def joy_filter(y, t):
-        return np.sin(base_freq * y)
-    def bliss_filter(y, t):
+    def joy(y, t):
+        return np.sin(t * y)
+    def bliss(y, t):
         return y + np.random.rand(len(y))
-    def delight_filter(y, t):
+    def delight(y, t):
         return np.sin(y) + 1
-    def cheer_filter(y, t):
+    def cheer(y, t):
         return np.sqrt(y) + 0.5*np.sin(3*t)
-    def comfort_filter(y, t):
+    def comfort(y, t):
         return savgol_filter(y, window_length=51, polyorder=3)
-    def valuable_filter(y, t):
+    def valuable(y, t):
         return y * (1 + 0.5 * np.sin(2 * t)) * (1 + 0.3 * np.sin(4 * t))
 
 # Negativity/Sadness
@@ -52,18 +52,18 @@ class Emotion(Block):
         # Implementation for perceiving negative events
         pass
 
-    def sadness_filter(y, t):
+    def sadness(y, t):
         return savgol_filter(y, window_length=101, polyorder=3)
-    def grief_filter(y, t):
+    def grief(y, t):
         return y - abs(np.random.rand(len(y)))
-    def sorrow_filter(y, t):
+    def sorrow(y, t):
         return savgol_filter(1 - y, window_length=51, polyorder=3)
-    def melancholy_filter(y, t):
+    def melancholy(y, t):
         return y * (1 - 0.5*np.sin(3*t))
-    def mourning_filter(y, t):
+    def mourning(y, t):
         smoothed = savgol_filter(np.float64(y), window='symmetric', polyorder=2, values=35, delta=2)
         return np.where(y >= 0.7*smoothed, y-0.15*smoothed, y+0.15*smoothed)  # Generate sporadic fluctuations from smooth data points.
-    def improved_mourning_filter(y, t):
+    def improved_mourning(y, t):
         # Smooth the input signal
         smoothed = savgol_filter(y, window_length=100, polyorder=2)
         # Generate sporadic fluctuations
@@ -75,9 +75,9 @@ class Emotion(Block):
                           y - 0.15 * smoothed + randomness,
                           y + 0.05 * smoothed + randomness)
         return dipped
-    def longing_filter(y, t):
+    def longing(y, t):
         return y * (1 + 0.3 * np.sin(0.8 * t)) * np.exp(-0.1 * t)
-    def amusement_filter(y, t):
+    def amusement(y, t):
         return y * (1 + 0.5 * np.sin(4 * t)) * (1 + 0.2 * np.random.randn(len(y)))
 
 # Energy/Vitality
@@ -86,23 +86,23 @@ class Emotion(Block):
         # Implementation for perceiving vitality-related events
         pass
 
-    def vigor_filter(y, t):
+    def vigor(y, t):
         return y * (np.sin(t) + 1)
-    def vivacity_filter(y, t):
+    def vivacity(y, t):
         return y * np.sin(t) * (0.5 + 0.5*np.sin(5*t))
-    def enthusiasm_filter(y, t):
+    def enthusiasm(y, t):
         return y * (1.5 + 0.5*np.abs(np.sin(3*t)))
-    def focus_filter(y, t):
+    def focus(y, t):
         return y * np.exp(-0.1*t)
-    def awareness_filter(y, t):
+    def awareness(y, t):
         return np.abs(np.fft.ifft(np.fft.fft(y)**2))
-    def excitement_filter(y, t):
+    def excitement(y, t):
         return y * (np.sin(3*t) + 2)
-    def liveliness_filter(y, t):
+    def liveliness(y, t):
         return 2*np.sin(4*t)*(y+0.5)
-    def playfulness_filter(y, t):
+    def playfulness(y, t):
         return (y+1) * np.sin(5*t)
-    def wistfulness_filter(y, t):
+    def wistfulness(y, t):
         return y * (1 + 0.2 * np.sin(base_freq * y)) * np.exp(-0.1 * t)
 
 # Calmness/Peace
@@ -111,23 +111,23 @@ class Emotion(Block):
         # Implementation for perceiving peaceful events
         pass
 
-    def calm_filter(y, t):
+    def calm(y, t):
         return savgol_filter(y, 101, 3)
-    def peace_filter(y, t):
+    def peace(y, t):
         return np.minimum(y, savgol_filter(np.abs(y), 31, 2))
-    def zen_filter(y, t):
+    def zen(y, t):
         return np.minimum(y, savgol_filter(y, 101, 2))
-    def tranquility_filter(y, t):
+    def tranquility(y, t):
         return savgol_filter(np.maximum(y,0), 201, 3)
-    def harmony_filter(y, t):
+    def harmony(y, t):
         return y * (1 + 0.75*np.cos(3*t))
-    def boredom_filter(y, t):
+    def boredom(y, t):
         return np.full(y.shape, np.mean(y))
-    def contentment_filter(y, t):
+    def contentment(y, t):
         return 0.8 * y + 0.2 * np.sin(0.5 * base_freq * y)
-    def relaxation_filter(y, t):
+    def relaxation(y, t):
         return np.minimum(y, savgol_filter(np.abs(y), 51, 3))
-    def serenity_filter(y, t):
+    def serenity(y, t):
         return np.sin(0.8 * base_freq * y) * np.exp(-0.05 * t)
 
 # Interest
@@ -136,25 +136,25 @@ class Emotion(Block):
         # Implementation for perceiving high-interest events
         pass
 
-    def creativity_filter(y, t):
+    def creativity(y, t):
         return y * (1 + 0.5*np.sin(3*t))
-    def anticipation_filter(y, t):
+    def anticipation(y, t):
         return y ** 2
-    def fascination_filter(y, t):
+    def fascination(y, t):
         return y * np.cos(5*t)
-    def wonder_filter(y, t):
+    def wonder(y, t):
         return y + 0.1*np.random.normal(0, 1, len(y))
-    def reverence_filter(y, t):
+    def reverence(y, t):
         return savgol_filter(y*np.sin(3*t), 101, 3)
-    def awe_filter(y, t):
+    def awe(y, t):
         return np.sin(base_freq * y) * (1 + 0.4 * np.sin(0.4 * t))
-    def curiousity_filter(y, t):
+    def curiousity(y, t):
         return savgol_filter(y, window_length=51, polyorder=2) * np.cos(y)
-    def nostalgia_filter(y, t):
+    def nostalgia(y, t):
         return savgol_filter(y, window_length=71, polyorder=3) * 0.8
-    def inspiration_filter(y, t):
+    def inspiration(y, t):
         return y + np.random.randn(len(y)) * 0.1 * np.maximum(0, y)
-    def admiration_filter(y, t):
+    def admiration(y, t):
         return 0.8 * y + 0.2 * np.sin(2 * base_freq * y)
 
 # Confidence
@@ -163,17 +163,17 @@ class Emotion(Block):
         # Implementation for perceiving confidence-related events
         pass
 
-    def confidence_filter(y, t):
+    def confidence(y, t):
         return y + 0.1 * np.random.randn(len(y))
-    def pride_filter(y, t):
+    def pride(y, t):
         return y + np.tanh(y)
-    def boldness_filter(y, t):
+    def boldness(y, t):
         return y + 0.5*np.random.rand(len(y))
-    def grit_filter(y, t):
+    def grit(y, t):
         return np.abs(y) + 0.2
-    def determination_filter(y, t):
+    def determination(y, t):
         return y * (1 + np.tanh(t))
-    def motivation_filter(y, t):
+    def motivation(y, t):
         return y * (1.5 + 0.5 * np.sin(2*t))
 
 # Love/Connection
@@ -182,21 +182,21 @@ class Emotion(Block):
         # Implementation for perceiving connection events
         pass
 
-    def brotherly_filter(y, t):
+    def brotherly(y, t):
         return np.maximum(y, np.sin(3*t))
-    def warmth_filter(y, t):
+    def warmth(y, t):
         return savgol_filter(y, 15, 2) + 0.1
-    def intimacy_filter(y, t):
+    def intimacy(y, t):
         return np.sqrt(np.abs(y)) * np.exp(-0.05*t)
-    def love_filter(y, t):
+    def love(y, t):
         return np.sqrt(np.abs(y))
-    def intimate_filter(y, t):
+    def intimate(y, t):
         return np.sqrt(np.abs(y)) * np.exp(-0.05*t)
-    def affection_filter(y, t):
+    def affection(y, t):
         return np.maximum(np.sin(3*t), y) + 0.3
-    def friendly_filter(y, t):
+    def friendly(y, t):
         return savgol_filter(y, 15, 2) + 0.1
-    def passionate_filter(y, t):
+    def passionate(y, t):
         return (y**2) * (1 + np.sin(t))
 
 # Surprise
@@ -205,13 +205,13 @@ class Emotion(Block):
         # Implementation for perceiving surprise events
         pass
 
-    def epiphany_filter(y, t):
+    def epiphany(y, t):
         return y * (1 + np.random.randint(0,5,len(y))*0.1)
-    def astonishment_filter(y, t):
+    def astonishment(y, t):
         return np.tanh(np.sin(3*y))
-    def amazement_filter(y, t):
+    def amazement(y, t):
         return y + 0.05*np.random.randint(2,10,len(y))
-    def surprise_filter(y, t):
+    def surprise(y, t):
         return y * (1 + np.random.randint(-1, 2, y.shape) * 0.3)
 
 # Fear
@@ -220,13 +220,13 @@ class Emotion(Block):
         # Implementation for perceiving fear events
         pass
 
-    def fear_filter(y, t):
+    def fear(y, t):
         return np.random.normal(y, 0.1)
-    def horror_filter(y, t):
+    def horror(y, t):
         return y * (1 - 0.5*np.random.rand(len(y)))
-    def terror_filter(y, t):
+    def terror(y, t):
         return 0.5*y * (1 + 0.2*np.random.randint(2,10,len(y)))
-    def panic_filter(y, t):
+    def panic(y, t):
         return y + 0.1*np.random.normal(0, 3, len(y))
 
 # Trust
@@ -235,21 +235,21 @@ class Emotion(Block):
         # Implementation for perceiving trusting events
         pass
 
-    def trust_filter(y, t):
+    def trust(y, t):
         return np.tanh(y)
-    def faith_filter(y, t):
+    def faith(y, t):
         return y + np.minimum(y, np.ones(len(y))*1.2)
-    def devotion_filter(y, t):
+    def devotion(y, t):
         return y + 0.5 + 0.25*np.cos(3*t)
-    def loyalty_filter(y, t):
+    def loyalty(y, t):
         return y + 0.2*np.cos(6*t)
-    def hope_filter(y, t):
+    def hope(y, t):
         return savgol_filter(y, window_length=15, polyorder=2) + np.maximum(0, y)
-    def optimism_filter(y, t):
+    def optimism(y, t):
         return np.sqrt(np.abs(y)) + 0.3
-    def gratitude_filter(y, t):
+    def gratitude(y, t):
         return savgol_filter(y, window_length=31, polyorder=3) * 1.2
-    def acceptance_filter(y, t):
+    def acceptance(y, t):
         return y + 0.1*np.random.rand(len(y))
 
 # Disgust
@@ -258,15 +258,15 @@ class Emotion(Block):
         # Implementation for perceiving disgusting events
         pass
 
-    def disgust_filter(y, t):
+    def disgust(y, t):
         return np.where(y > 0, y * 1.5, y * 0.5)
-    def loathing_filter(y, t):
+    def loathing(y, t):
         return y - np.abs(0.2*np.random.rand(len(y)))
-    def revulsion_filter(y, t):
+    def revulsion(y, t):
         return y - 0.5*np.abs(np.sin(3*t))
-    def contempt_filter(y, t):
+    def contempt(y, t):
         return y * (1 - np.abs(np.sin(2*t)))
-    def disdain_filter(y, t):
+    def disdain(y, t):
         return y * (1 - 0.5*np.abs(np.sin(3*t)))
 
 # Protection
@@ -280,7 +280,7 @@ class Protection(Emotion):
         pass
 
     # Function to create a psychic shield modifier
-    def psychic_shield_filter(y):
+    def psychic_shield(y):
         return np.where(np.abs(y) < 0.5, 0, y)
     
     def invoke_crystal_grid(self, grid, t):
@@ -289,7 +289,7 @@ class Protection(Emotion):
 
     @property
     def state(self):
-        return self.emotion_filter
+        return self.emotion
 
 # DSM-5
 
@@ -307,7 +307,7 @@ class DSM(Emotion):
     Impulse control issues manifest as spikes and discontinuities
     Hyperactivity captured through overlaid high-frequency sinusoidal fluctuations
     """
-    def adhd_filter(y, window_length):
+    def adhd(y, window_length):
         window_length = np.random.randint(low=5, high=15, size=len(y))
         return savgol_filter(y.ravel(), window_length=window_length, polyorder=2) + 0.1*np.random.randn(len(y)) + np.sin(5*t)
 
@@ -319,7 +319,7 @@ class DSM(Emotion):
     Restricted interests as repetitive waveforms
     Parameterize severity along spectrum
     """
-    def autism_filter(y, severity=0.5):
+    def autism(y, severity=0.5):
         intensity = 1 + 2*severity 
         social_cutoff = severity*20 # Frequencies filtered 
         repetition = 10 - 7*severity # Periodicity of wave
@@ -335,7 +335,7 @@ class DSM(Emotion):
     Persistent high-frequency rumination
     """
 
-    def anxiety_filter(y):
+    def anxiety(y):
         baseline = y + 0.1*np.random.uniform(-1, 1, len(y))
         spikes = np.maximum(-5, np.minimum(10*y, 5))  
         rumination = np.sin(10*t)  
@@ -349,7 +349,7 @@ class DSM(Emotion):
     Smearing of experience over time
     """
 
-    def depression_filter(y):
+    def depression(y):
         muting = 0.5*np.abs(y)
         dips = np.minimum(-0.5, y) 
         blur = signal.gauss_filter(y, sigma=5)
@@ -366,82 +366,82 @@ class DSM(Emotion):
     """
 
     # Personality Disorders 
-    def borderline_traits_filter(y):
+    def borderline_traits(y):
         instability = signal.resample(y, int(len(y)/2))
         intensity = 10*y/(10 + np.abs(y))  
         return 0.6*instability + 0.3*intensity + 0.1*y   
 
-    def antisocial_filter(y):
+    def antisocial(y):
         no_empathy = np.abs(np.minimum(y, 0))
         risk_taking = 1.5*y* (1 + 0.5*np.random.uniform(-1,1)) 
         return 0.7*no_empathy + 0.3*risk_taking
 
     # Bipolar / Cyclothymia
-    def manic_state_filter(y):
+    def manic_state(y):
         goal_directed = 2*y* (1 + np.cos(t)) 
         risks = goal_directed + np.random.normal(0, 0.5, len(y)) 
         return 0.7*goal_directed + 0.3*risks
 
-    def depressive_episode_filter(y):
-        return depression_filter(y) # Defined previously
+    def depressive_episode(y):
+        return depression(y) # Defined previously
       
     # Trauma / Stress / Dissociation  
-    def trauma_filter_filter(y):
+    def trauma(y):
         fragments = signal.resample(np.abs(y), int(len(y)/2))
         avoidance = np.min([0, y], axis=0)
         flashback = 10*(np.abs(y) - avoidance)  
         return 0.6*avoidance + 0.3*fragments + 0.1*flashback
 
     # Psychosis continuum 
-    def prodromal_filter(y):
+    def prodromal(y):
         suspicious = np.abs(np.minimum(y, 0))  
         magical = (y+0.5) * (1 + 0.5*np.sin(7*t))
         return 0.7*suspicious + 0.3*magical
 
-    def psychosis_filter(y):  
+    def psychosis(y):  
         delusions = y + np.random.randint(-3, 4, len(y))
         hallucinations = y + np.random.normal(0, 2, len(y)) 
         disorganized = signal.resample(y, int(len(y)/2)) 
         return delusions + hallucinations + disorganized
 
     # Sensory intensity
-    def intensity_filter(x, factor):
+    def intensity(x, factor):
         return x * factor
 
-        intense_x = intensity_filter(x, 5)
+        intense_x = intensity(x, 5)
 
     # Sensory fragmentation
-    def fragmentation_filter(x, n_fragments):
+    def fragmentation(x, n_fragments):
         fragments = np.split(x, n_fragments)
         fragments = np.random.permutation(fragments)
         return np.concatenate(fragments)
 
-        fragments_x = fragmentation_filter(x, 4)
+        fragments_x = fragmentation(x, 4)
 
     # Hallucinations 
-    def hallucination_filter(x, halluc_scale=0.1):
+    def hallucination(x, halluc_scale=0.1):
         hallucinations = np.random.normal(scale=halluc_scale, size=len(x)) 
         return x + hallucinations
 
-        hallucinated_x = hallucination_filter(x)
+        hallucinated_x = hallucination(x)
 
     # Thought disturbance
-    def disturbance_filter(x): 
+    def disturbance(x): 
         X = np.fft.rfft(x)
         phase = np.random.vonmises(mu=0, kappa=20, size=len(X))  
         X_dist = X * np.exp(1j*phase)
         return np.fft.irfft(X_dist)
 
-        disturbed_x = disturbance_filter(x)
+        disturbed_x = disturbance(x)
 
     # Suppressed awareness 
-    def suppression_filter(x, cutoff=10):
+    def suppression(x, cutoff=10):
         b, a = signal.butter(3, cutoff, 'lowpass')
         return signal.filtfilt(b, a, x)  
 
-        suppressed_x = suppression_filter(x, 5)
+        suppressed_x = suppression(x, 5)
 
-    def emotional_instability_filter(x, severity=0.5):
+    def emotional_instability(x, severity=0.5):
     
         # Fragmented "agents"
         fragments = signal.resample(x, int(len(x)*(1-severity)))  
@@ -455,7 +455,7 @@ class DSM(Emotion):
 
         return fragments + perturbations + filtered
 
-    def depersonalization_filter(x, num_agents=8, severity=0.5):
+    def depersonalization(x, num_agents=8, severity=0.5):
 
         # Splits waveform amongst dissociated self-agents
         agents = np.split(x, num_agents) 
@@ -467,7 +467,7 @@ class DSM(Emotion):
         
         return sum(agents) + spin_echo*severity
 
-    def racing_thoughts_filter(x, frequency=30, n_threads=8):
+    def racing_thoughts(x, frequency=30, n_threads=8):
 
         threads = []
         for i in range(n_threads):
@@ -476,7 +476,7 @@ class DSM(Emotion):
 
         return sum(threads) + x
 
-    def theory_of_mind_filter(x, level=1):
+    def theory_of_mind(x, level=1):
    
         # Filters waveform to model internal vs. external perspective taking
         b,a = signal.butter(4, level*20, 'low') 
@@ -484,7 +484,7 @@ class DSM(Emotion):
 
         return x - np.abs(filtered_x)
 
-    def hypersensitivity_filter(x, sensitivity=0.5):
+    def hypersensitivity(x, sensitivity=0.5):
 
         # Models fragile emotional boundaries     
         fragility = np.gradient(np.gradient(x))  
@@ -494,7 +494,7 @@ class DSM(Emotion):
 
         return fragility + overload
 
-    def sensory_sensitivity_filter(x, threshold=0.5):
+    def sensory_sensitivity(x, threshold=0.5):
     
         # Models sensory overload    
         overload = np.clip(threshold * x**2, -1, 1)
@@ -504,7 +504,7 @@ class DSM(Emotion):
             
         return overload + sensitivity
 
-    def restrictive_repetitive_filter(x, severity=0.5):
+    def restrictive_repetitive(x, severity=0.5):
 
         # Looping, restrictive waveform shape    
         base = np.sin(np.mod(5*t, 2*np.pi)) 
@@ -514,7 +514,7 @@ class DSM(Emotion):
         
         return base + repetitive
 
-    def attachment_issues_filter(x, severity=0.5):
+    def attachment_issues(x, severity=0.5):
 
         # Reduces social signal (human connection)
         social_cutoff_hz = severity*100  
