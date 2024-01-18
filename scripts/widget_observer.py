@@ -1,8 +1,5 @@
-import sys
-sys.path.insert(0, "/Users/jenkinsm/Library/Mobile Documents/com~apple~CloudDocs/Metamer's Equations/git/qplay/scripts")
-
 import time
-from scripts.blocks import global_chain, Block, Agent
+from blocks import global_chain, Block, Agent
 
 example_block = Block(name='Widget', state='entangled')
 time.sleep(2)  # Pauses execution
