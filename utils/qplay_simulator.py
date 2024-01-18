@@ -1,9 +1,10 @@
 # /utils/qplay_simulator.py
 
 from qplay_core import *
+from qplay_blocks import HyperAgent
 import numpy as np
 
-class QuantumSimulator:
+class QuantumSimulator(HyperAgent):
     def __init__(self, num_qubits):
         self.num_qubits = num_qubits
         self.state = self.initialize_state()
