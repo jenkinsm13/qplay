@@ -130,21 +130,27 @@ class Block:
         return f"Block({self.name}, thought: {self.encoded_thought})"
 
 class HyperBlock(Block):
-    def __init__(self, name, thought_vector, energy_level, sub_blocks=[], state='superposition'):
+    def __init__(self, name, thought_vector, energy_level, position=None, sub_blocks=[], state='superposition'):
         super().__init__(name, thought_vector=None, state=state)
         self.knowledge_base = {}
+        self.position = position
         self.energy_level = energy_level
         self.sub_blocks = sub_blocks
+        self.thought_vector = thought_vector if thought_vector is not None else np.array([])
 
     def activate(self):
         print(f"HyperBlock {self.name} activated at energy level {self.energy_level}")
 
     def learn(self, block):
         if not isinstance(block, Block):
-            raise AgentError("Only Block instances can be added to knowledge.")
+            raise BlockError("Only Block instances can be added to knowledge.")
         self.knowledge_base[block.name] = block
         if self.chain:
             self.chain.add_to_ledger(f"{block.name} added to knowledge of {self.name}.", source=self.name, is_global_event=False)
+ 
+    def ponder(self, question):
+        """Think with current knowledge to yield insights"""  
+        return self.learn(question, self.knowledge_base)
 
     def traverse_and_learn(self, start_block):
             visited = {}
@@ -168,7 +174,7 @@ class Agent(HyperBlock):
         self.chain.add_to_ledger(f"Agent {self.name} created.", source=self.name, is_global_event=False)
 
     def emerge_new_block(self):
-       new_block = QuantumBlock()
+       new_block = Block()
        for known in self.knowledge_base:
            new_block.connect(known)
        return new_block
@@ -217,18 +223,13 @@ class Agent(HyperBlock):
             raise AgentError("Tool not acquired.")
         tool = self.tool_box[tool_name]
         global_chain.add_to_ledger(f"Agent {self.name} used tool: {tool}", source=self.name, is_global_event=True)
-        y = params["y"]  
-        t = params["t"]
+        y = parameters["y"]  
+        t = parameters["t"]
         # Apply tool/filter 
         y, t = tool.apply(y, t)  
         # Handle visualization updates
-        update_waveform_plot(y, t)
+        self.update_waveform_plot(y, t)
         return y, t 
-
-
-    def ponder(self, question):
-        """Think with current knowledge to yield insights"""  
-        return assimilate(question, self.knowledge_base)
 
     def perceive(self, quantum_block):
         # Process quantum data

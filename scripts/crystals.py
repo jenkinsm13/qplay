@@ -7,13 +7,16 @@ from scipy.signal import *
 import scipy.signal as signal
 
 class Crystal(HyperBlock):
-    def __init__(self, name, wave_function, properties, energy_level):
-        super().__init__(name, thought_vector=None, state="superposition", energy_level=energy_level)
-        self.wave_function = wave_function
-        self.properties = properties
+    def __init__(self, name, waveform, properties, position=None, energy_level=1):
+        super().__init__(name, thought_vector=None, position=None, energy_level=1)
+        self.name = name
+        self.waveform = waveform
+        self.properties = properties if properties else {}
+        self.energy_level = energy_level
+        self.position = position
 
     def filter_wave(self, source_wave):
-        filtered_wave = source_wave * self.wave_function(source_wave)
+        filtered_wave = source_wave * self.waveform(source_wave)
         return filtered_wave
 
     def activate(self, intensity):
@@ -26,8 +29,8 @@ class Crystal(HyperBlock):
         # Enable potential interactions and information exchange
         pass
 
-    def get_waveform(self, t):
-        return self.wave_function(t)
+    def get_waveform(self, t, energy_level):
+        return self.waveform(t, energy_level)
 
     @staticmethod
     # Agate - balance, stability
@@ -302,15 +305,17 @@ class CrystalChannel(Crystal):
 class CrystalGrid(Agent):
     "Constructs crystal arrangements"  
   
-    def __init__(self, size, crystals, name="Crystal Grid"):
-        super().__init__(name)
+    def __init__(self, size, radius, crystals=None, name="Crystal Grid"):
+        super().__init__(name, thought_vector=None, state="entangled")
         self.size = size
-        self.crystals = crystals
+        self.radius = radius
+        self.crystals = crystals if crystals else []
+        self.assign_positions()
 
     def _map_grid(self):
         """Assign crystal positions"""
-        angles = np.linspace(0, 2*np.pi, self.size + 1)[:-1]
-        positions = [[np.cos(a), 0, np.sin(a)] for a in angles]  
+        angles = np.linspace(0, 2*np.pi, len(self.crystals))
+        positions = [[self.radius*np.cos(a), 0, self.radius*np.sin(a)] for a in angles]  
         # Create a mapping of crystals to positions
         crystal_to_position = dict(zip(self.crystals, positions))
         # Create a mapping of slots to crystals
@@ -355,7 +360,50 @@ class CrystalGrid(Agent):
             return self._interference_pattern(crystals, positions)
         elif method == 'entangled':
             return self._entangle_waves(crystals, positions)
+    
+    def _entangle_waves(self, waves, positions):
+        """Combine waves based on their positions using entanglement logic."""
+        combined_wave = np.zeros_like(waves[0])
+        for wave, position in zip(waves, positions):
+            # Normalize the position scale to -2π to 2π
+            normalized_position = (np.linalg.norm(position) / self.radius) * 4 * np.pi - 2 * np.pi
+            combined_wave += wave * normalized_position
+        return combined_wave / len(waves)
 
+    def _additive_blend(self, waves, positions):
+        """Combine waves additively with position-based weighting."""
+        combined_wave = np.zeros_like(waves[0])
+        for wave, position in zip(waves, positions):
+            normalized_position = (np.linalg.norm(position) / self.radius) * 4 * np.pi - 2 * np.pi
+            combined_wave += wave * normalized_position
+        return combined_wave / len(waves)
+
+    def _multiply_blend(self, waves, positions):
+        """Multiply waves with position-based modification."""
+        combined_wave = np.ones_like(waves[0])
+        for wave, position in zip(waves, positions):
+            normalized_position = (np.linalg.norm(position) / self.radius) * 4 * np.pi - 2 * np.pi
+            combined_wave *= wave * normalized_position
+        return combined_wave
+
+    def _convolution_blend(self, waves, positions):
+        """Convolve waves with position-based influence."""
+        combined_wave = np.zeros_like(waves[0])
+        for wave, position in zip(waves, positions):
+            normalized_position = (np.linalg.norm(position) / self.radius) * 4 * np.pi - 2 * np.pi
+            combined_wave = signal.convolve(combined_wave, wave * normalized_position, mode="same")
+        return combined_wave / len(waves)
+        
+    def _interference_pattern(self, waves, positions):
+        """Create interference patterns based on wave and position."""
+        x = np.linspace(-np.pi, np.pi, 1024)
+        combined_wave = np.zeros_like(x)
+        for wave, position in zip(waves, positions):
+            normalized_position = (np.linalg.norm(position) / self.radius) * 4 * np.pi - 2 * np.pi
+            combined_wave += np.sin(5 * normalized_position * np.linalg.norm([x, wave]))
+        return combined_wave
+    
+    """
     def _entangle_waves(self, waves, positions):
         return self.combine_crystals_based_on_position(waves, positions)
 
@@ -370,11 +418,13 @@ class CrystalGrid(Agent):
         return conv
         
     def _interference_pattern(self, waves):
-        """Superpose like sound/light waves"""  
+        Superpose like sound/light waves  
         x = np.linspace(-np.pi, np.pi, 1024)
         z = sum([np.sin(5 * np.linalg.norm([x_i, wave])) 
                  for x_i, wave in zip(x, waves)]) 
         return z
+    """
+
 
     def combine_multiple_waves(self, crystal_functions, t, energy_level, method, num_crystals=9):
         positions = self.place_crystals_on_grid(num_crystals)
@@ -384,16 +434,77 @@ class CrystalGrid(Agent):
     def get_waveform(self, t, method):
         """
         Orchestrating method:
-            1. Gets individual crystal waves  
-            2. Combines them as a composite grid waveform  
+            1. Gets individual crystal waveforms  
+            2. Combines them as a composite grid waveform based on their positions
             3. Returns final waveform
         """
+        # Generate waveforms and positions for each crystal
         waves = []
+        positions = []
         for crystal in self.crystals:
-            # Get wavefrom each crystal instance 
-            wave = crystal.get_waveform(t) 
+            wave = crystal.get_waveform(t, energy_level=crystal.energy_level)
             waves.append(wave)
+            positions.append(crystal.position)
 
-        positions = self.place_crystals_on_grid(len(waves))    
+        # Combine the waveforms based on positions and the specified method
+        if method == 'product':
+            combined_waveform = self._multiply_blend(waves, positions)
+        elif method == 'additive':
+            combined_waveform = self._additive_blend(waves, positions)
+        elif method == 'convolution':
+            combined_waveform = self._convolution_blend(waves, positions)
+        elif method == 'interference':
+            combined_waveform = self._interference_pattern(waves, positions)
+        elif method == 'entangled':
+            combined_waveform = self._entangle_waves(waves, positions)
+        else:
+            combined_waveform = np.zeros_like(t)  # Default to zero waveform if method is unknown
 
-        return self.combine_crystals(method, waves, positions)
+        return combined_waveform
+    
+    def assign_positions(self):
+        """Assign positions to crystals in a circular grid on the xz plane."""
+        angles = np.linspace(0, 2 * np.pi, self.size, endpoint=False)
+        for angle, crystal in zip(angles, self.crystals):
+            x = self.radius * np.cos(angle)
+            z = self.radius * np.sin(angle)
+            crystal.position = (x, 0, z)  # Position in xz plane
+
+
+    def add_crystal(self, crystal):
+        self.crystals.append(crystal)
+        # Assign a position to the new crystal
+        self.assign_positions()
+
+    def update_radius(self, new_radius):
+        self.radius = new_radius
+        self.assign_positions()
+
+    def visualize(self, as_shapes=False, label_type=None):
+            """Visualize the grid of crystals."""
+            # Extract x and z coordinates from positions
+            x_coords = [crystal.position[0] for crystal in self.crystals]
+            z_coords = [crystal.position[2] for crystal in self.crystals]
+
+            # Extract colors of the crystals
+            colors = [crystal.properties.get("color", "black") for crystal in self.crystals]
+
+            # Create a scatter plot
+            plt.figure(figsize=(8, 8))
+            plt.scatter(x_coords, z_coords, c=colors, s=100)  # Adjust size as needed
+
+            # Add labels
+            if label_type == 'name':
+                for crystal, x, z in zip(self.crystals, x_coords, z_coords):
+                    plt.text(x, z, crystal.name, horizontalalignment='center')
+
+            # Set plot limits and labels
+            plt.xlim(-self.radius-1, self.radius+1)
+            plt.ylim(-self.radius-1, self.radius+1)
+            plt.xlabel("X-axis")
+            plt.ylabel("Z-axis")
+            plt.title("Crystal Grid Visualization")
+            plt.grid(True)
+            plt.axhline(0, color='black',linewidth=0.5)
+            plt.axvline(0, color='black',linewidth=0.5)
+            plt.show()

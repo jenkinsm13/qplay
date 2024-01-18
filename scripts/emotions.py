@@ -34,27 +34,27 @@ class Emotion(Block):
         pass
 
     @staticmethod
-    def joy(y, t):
+    def joy(t, y):
         return np.sin(t * y)
     
     @staticmethod
-    def bliss(y, t):
+    def bliss(t, y):
         return y + np.random.rand(len(y))
     
     @staticmethod
-    def delight(y, t):
+    def delight(t, y):
         return np.sin(y) + 1
     
     @staticmethod
-    def cheer(y, t):
+    def cheer(t, y):
         return np.sqrt(y) + 0.5*np.sin(3*t)
     
     @staticmethod
-    def comfort(y, t):
+    def comfort(t, y):
         return savgol_filter(y, window_length=51, polyorder=3)
     
     @staticmethod
-    def valuable(y, t):
+    def valuable(t, y):
         return y * (1 + 0.5 * np.sin(2 * t)) * (1 + 0.3 * np.sin(4 * t))
 
 # Negativity/Sadness
@@ -64,19 +64,19 @@ class Emotion(Block):
         pass
 
     @staticmethod
-    def sadness(y, t):
+    def sadness(t, y):
         return savgol_filter(y, window_length=101, polyorder=3)
     
     @staticmethod
-    def grief(y, t):
+    def grief(t, y):
         return y - abs(np.random.rand(len(y)))
     
     @staticmethod
-    def sorrow(y, t):
+    def sorrow(t, y):
         return savgol_filter(1 - y, window_length=51, polyorder=3)
     
     @staticmethod
-    def melancholy(y, t):
+    def melancholy(t, y):
         return y * (1 - 0.5*np.sin(3*t))
     
     @staticmethod
@@ -85,7 +85,7 @@ class Emotion(Block):
         return np.where(y >= 0.7*smoothed, y-0.15*smoothed, y+0.15*smoothed)  # Generate sporadic fluctuations from smooth data points.
     
     @staticmethod
-    def improved_mourning(y, t):
+    def improved_mourning(t, y):
         # Smooth the input signal
         smoothed = savgol_filter(y, window_length=100, polyorder=2)
         # Generate sporadic fluctuations
@@ -99,11 +99,11 @@ class Emotion(Block):
         return dipped
     
     @staticmethod
-    def longing(y, t):
+    def longing(t, y):
         return y * (1 + 0.3 * np.sin(0.8 * t)) * np.exp(-0.1 * t)
     
     @staticmethod
-    def amusement(y, t):
+    def amusement(t, y):
         return y * (1 + 0.5 * np.sin(4 * t)) * (1 + 0.2 * np.random.randn(len(y)))
 
 # Energy/Vitality
@@ -113,39 +113,39 @@ class Emotion(Block):
         pass
 
     @staticmethod
-    def vigor(y, t):
+    def vigor(t, y):
         return y * (np.sin(t) + 1)
     
     @staticmethod
-    def vivacity(y, t):
+    def vivacity(t, y):
         return y * np.sin(t) * (0.5 + 0.5*np.sin(5*t))
     
     @staticmethod
-    def enthusiasm(y, t):
+    def enthusiasm(t, y):
         return y * (1.5 + 0.5*np.abs(np.sin(3*t)))
     
     @staticmethod
-    def focus(y, t):
+    def focus(t, y):
         return y * np.exp(-0.1*t)
     
     @staticmethod
-    def awareness(y, t):
+    def awareness(t, y):
         return np.abs(np.fft.ifft(np.fft.fft(y)**2))
     
     @staticmethod
-    def excitement(y, t):
+    def excitement(t, y):
         return y * (np.sin(3*t) + 2)
     
     @staticmethod
-    def liveliness(y, t):
+    def liveliness(t, y):
         return 2*np.sin(4*t)*(y+0.5)
     
     @staticmethod
-    def playfulness(y, t):
+    def playfulness(t, y):
         return (y+1) * np.sin(5*t)
     
     @staticmethod
-    def wistfulness(y, t):
+    def wistfulness(t, y):
         return y * (1 + 0.2 * np.sin(base_freq * y)) * np.exp(-0.1 * t)
 
 # Calmness/Peace
@@ -155,39 +155,39 @@ class Emotion(Block):
         pass
 
     @staticmethod
-    def calm(y, t):
+    def calm(t, y):
         return savgol_filter(y, 101, 3)
     
     @staticmethod
-    def peace(y, t):
+    def peace(t, y):
         return np.minimum(y, savgol_filter(np.abs(y), 31, 2))
     
     @staticmethod
-    def zen(y, t):
+    def zen(t, y):
         return np.minimum(y, savgol_filter(y, 101, 2))
     
     @staticmethod
-    def tranquility(y, t):
+    def tranquility(t, y):
         return savgol_filter(np.maximum(y,0), 201, 3)
     
     @staticmethod
-    def harmony(y, t):
+    def harmony(t, y):
         return y * (1 + 0.75*np.cos(3*t))
     
     @staticmethod
-    def boredom(y, t):
+    def boredom(t, y):
         return np.full(y.shape, np.mean(y))
     
     @staticmethod
-    def contentment(y, t):
+    def contentment(t, y):
         return 0.8 * y + 0.2 * np.sin(0.5 * base_freq * y)
     
     @staticmethod
-    def relaxation(y, t):
+    def relaxation(t, y):
         return np.minimum(y, savgol_filter(np.abs(y), 51, 3))
     
     @staticmethod
-    def serenity(y, t):
+    def serenity(t, y):
         return np.sin(0.8 * base_freq * y) * np.exp(-0.05 * t)
 
 # Interest
@@ -197,43 +197,43 @@ class Emotion(Block):
         pass
     
     @staticmethod
-    def creativity(y, t):
+    def creativity(t, y):
         return y * (1 + 0.5*np.sin(3*t))
     
     @staticmethod
-    def anticipation(y, t):
+    def anticipation(t, y):
         return y ** 2
     
     @staticmethod
-    def fascination(y, t):
+    def fascination(t, y):
         return y * np.cos(5*t)
     
     @staticmethod
-    def wonder(y, t):
+    def wonder(t, y):
         return y + 0.1*np.random.normal(0, 1, len(y))
     
     @staticmethod
-    def reverence(y, t):
+    def reverence(t, y):
         return savgol_filter(y*np.sin(3*t), 101, 3)
     
     @staticmethod
-    def awe(y, t):
+    def awe(t, y):
         return np.sin(base_freq * y) * (1 + 0.4 * np.sin(0.4 * t))
     
     @staticmethod
-    def curiousity(y, t):
+    def curiousity(t, y):
         return savgol_filter(y, window_length=51, polyorder=2) * np.cos(y)
     
     @staticmethod
-    def nostalgia(y, t):
+    def nostalgia(t, y):
         return savgol_filter(y, window_length=71, polyorder=3) * 0.8
     
     @staticmethod
-    def inspiration(y, t):
+    def inspiration(t, y):
         return y + np.random.randn(len(y)) * 0.1 * np.maximum(0, y)
     
     @staticmethod
-    def admiration(y, t):
+    def admiration(t, y):
         return 0.8 * y + 0.2 * np.sin(2 * base_freq * y)
 
 # Confidence
@@ -243,27 +243,27 @@ class Emotion(Block):
         pass
 
     @staticmethod
-    def confidence(y, t):
+    def confidence(t, y):
         return y + 0.1 * np.random.randn(len(y))
     
     @staticmethod
-    def pride(y, t):
+    def pride(t, y):
         return y + np.tanh(y)
     
     @staticmethod
-    def boldness(y, t):
+    def boldness(t, y):
         return y + 0.5*np.random.rand(len(y))
     
     @staticmethod
-    def grit(y, t):
+    def grit(t, y):
         return np.abs(y) + 0.2
     
     @staticmethod
-    def determination(y, t):
+    def determination(t, y):
         return y * (1 + np.tanh(t))
     
     @staticmethod
-    def motivation(y, t):
+    def motivation(t, y):
         return y * (1.5 + 0.5 * np.sin(2*t))
 
 # Love/Connection
@@ -273,35 +273,35 @@ class Emotion(Block):
         pass
     
     @staticmethod
-    def brotherly(y, t):
+    def brotherly(t, y):
         return np.maximum(y, np.sin(3*t))
     
     @staticmethod
-    def warmth(y, t):
+    def warmth(t, y):
         return savgol_filter(y, 15, 2) + 0.1
     
     @staticmethod
-    def intimacy(y, t):
+    def intimacy(t, y):
         return np.sqrt(np.abs(y)) * np.exp(-0.05*t)
     
     @staticmethod
-    def love(y, t):
+    def love(t, y):
         return np.sqrt(np.abs(y))
     
     @staticmethod
-    def intimate(y, t):
+    def intimate(t, y):
         return np.sqrt(np.abs(y)) * np.exp(-0.05*t)
     
     @staticmethod
-    def affection(y, t):
+    def affection(t, y):
         return np.maximum(np.sin(3*t), y) + 0.3
     
     @staticmethod
-    def friendly(y, t):
+    def friendly(t, y):
         return savgol_filter(y, 15, 2) + 0.1
     
     @staticmethod
-    def passionate(y, t):
+    def passionate(t, y):
         return (y**2) * (1 + np.sin(t))
 
 # Surprise
@@ -311,19 +311,19 @@ class Emotion(Block):
         pass
     
     @staticmethod
-    def epiphany(y, t):
+    def epiphany(t, y):
         return y * (1 + np.random.randint(0,5,len(y))*0.1)
     
     @staticmethod
-    def astonishment(y, t):
+    def astonishment(t, y):
         return np.tanh(np.sin(3*y))
     
     @staticmethod
-    def amazement(y, t):
+    def amazement(t, y):
         return y + 0.05*np.random.randint(2,10,len(y))
     
     @staticmethod
-    def surprise(y, t):
+    def surprise(t, y):
         return y * (1 + np.random.randint(-1, 2, y.shape) * 0.3)
 
 # Fear
@@ -333,19 +333,19 @@ class Emotion(Block):
         pass
 
     @staticmethod
-    def fear(y, t):
+    def fear(t, y):
         return np.random.normal(y, 0.1)
     
     @staticmethod
-    def horror(y, t):
+    def horror(t, y):
         return y * (1 - 0.5*np.random.rand(len(y)))
     
     @staticmethod
-    def terror(y, t):
+    def terror(t, y):
         return 0.5*y * (1 + 0.2*np.random.randint(2,10,len(y)))
     
     @staticmethod
-    def panic(y, t):
+    def panic(t, y):
         return y + 0.1*np.random.normal(0, 3, len(y))
 
 # Trust
@@ -355,35 +355,35 @@ class Emotion(Block):
         pass
 
     @staticmethod
-    def trust(y, t):
+    def trust(t, y):
         return np.tanh(y)
     
     @staticmethod
-    def faith(y, t):
+    def faith(t, y):
         return y + np.minimum(y, np.ones(len(y))*1.2)
     
     @staticmethod
-    def devotion(y, t):
+    def devotion(t, y):
         return y + 0.5 + 0.25*np.cos(3*t)
     
     @staticmethod
-    def loyalty(y, t):
+    def loyalty(t, y):
         return y + 0.2*np.cos(6*t)
     
     @staticmethod
-    def hope(y, t):
+    def hope(t, y):
         return savgol_filter(y, window_length=15, polyorder=2) + np.maximum(0, y)
     
     @staticmethod
-    def optimism(y, t):
+    def optimism(t, y):
         return np.sqrt(np.abs(y)) + 0.3
     
     @staticmethod
-    def gratitude(y, t):
+    def gratitude(t, y):
         return savgol_filter(y, window_length=31, polyorder=3) * 1.2
     
     @staticmethod
-    def acceptance(y, t):
+    def acceptance(t, y):
         return y + 0.1*np.random.rand(len(y))
 
 # Disgust
@@ -393,23 +393,23 @@ class Emotion(Block):
         pass
 
     @staticmethod
-    def disgust(y, t):
+    def disgust(t, y):
         return np.where(y > 0, y * 1.5, y * 0.5)
     
     @staticmethod
-    def loathing(y, t):
+    def loathing(t, y):
         return y - np.abs(0.2*np.random.rand(len(y)))
     
     @staticmethod
-    def revulsion(y, t):
+    def revulsion(t, y):
         return y - 0.5*np.abs(np.sin(3*t))
     
     @staticmethod
-    def contempt(y, t):
+    def contempt(t, y):
         return y * (1 - np.abs(np.sin(2*t)))
     
     @staticmethod
-    def disdain(y, t):
+    def disdain(t, y):
         return y * (1 - 0.5*np.abs(np.sin(3*t)))
 
 # Protection
@@ -423,7 +423,7 @@ class Protection(Emotion):
         pass
 
     # Function to create a psychic shield modifier
-    def psychic_shield(y):
+    def psychic_shield(t, y):
         return np.where(np.abs(y) < 0.5, 0, y)
     
     def invoke_crystal_grid(self, grid, t):
