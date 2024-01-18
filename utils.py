@@ -1,6 +1,5 @@
 # /utils/qplay_utils.py
 
-from core import *
 import numpy as np
 
 def optimize_circuit(circuit):

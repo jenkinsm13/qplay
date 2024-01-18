@@ -2,8 +2,7 @@
 
 import math
 import numpy as np
-import blocks.blocks as blocks
-from blocks.blocks import Block, Agent
+from blocks import Block, Agent
 
 class Movement(Block):
     """

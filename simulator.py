@@ -1,7 +1,6 @@
 # /utils/qplay_simulator.py
 
-from qplay_core import *
-from qplay_blocks import HyperAgent
+from blocks import HyperAgent
 import numpy as np
 
 class QuantumSimulator(HyperAgent):

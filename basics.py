@@ -1,8 +1,6 @@
 # /core/qplay_basics.py
 
-from core.core import *
-import blocks.blocks as qpl
-from blocks.blocks import Block, Agent
+from blocks import Block, Agent
 import datetime
 import math
 

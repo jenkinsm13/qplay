@@ -1,7 +1,6 @@
 # /blocks/qplay_crystals.py
 
-import blocks.blocks as blocks
-from blocks.blocks import HyperBlock
+from blocks import HyperBlock
 import numpy as np
 import matplotlib.pyplot as plt
 

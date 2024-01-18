@@ -1,6 +1,5 @@
 # /utils/qplay_visualize.py
 
-from core import *
 import matplotlib.pyplot as plt
 
 def plot_state(registers):

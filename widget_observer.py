@@ -1,6 +1,5 @@
 import time
-import blocks
-from blocks import global_chain
+from blocks import global_chain, Block, Agent
 
 example_block = Block(name='Widget', state='entangled')
 time.sleep(2)  # Pauses execution
