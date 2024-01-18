@@ -145,7 +145,7 @@ class Emotion(Block):
         return (y+1) * np.sin(5*t)
     
     @staticmethod
-    def wistfulness(t, y):
+    def wistfulness(t, y, base_freq):
         return y * (1 + 0.2 * np.sin(base_freq * y)) * np.exp(-0.1 * t)
 
 # Calmness/Peace
@@ -179,7 +179,7 @@ class Emotion(Block):
         return np.full(y.shape, np.mean(y))
     
     @staticmethod
-    def contentment(t, y):
+    def contentment(base_freq, y):
         return 0.8 * y + 0.2 * np.sin(0.5 * base_freq * y)
     
     @staticmethod
@@ -187,7 +187,7 @@ class Emotion(Block):
         return np.minimum(y, savgol_filter(np.abs(y), 51, 3))
     
     @staticmethod
-    def serenity(t, y):
+    def serenity(t, y, base_freq):
         return np.sin(0.8 * base_freq * y) * np.exp(-0.05 * t)
 
 # Interest
@@ -217,7 +217,7 @@ class Emotion(Block):
         return savgol_filter(y*np.sin(3*t), 101, 3)
     
     @staticmethod
-    def awe(t, y):
+    def awe(t, y, base_freq):
         return np.sin(base_freq * y) * (1 + 0.4 * np.sin(0.4 * t))
     
     @staticmethod
@@ -233,7 +233,7 @@ class Emotion(Block):
         return y + np.random.randn(len(y)) * 0.1 * np.maximum(0, y)
     
     @staticmethod
-    def admiration(t, y):
+    def admiration(t, y, base_freq):
         return 0.8 * y + 0.2 * np.sin(2 * base_freq * y)
 
 # Confidence
@@ -450,7 +450,7 @@ class DSM(Emotion):
     Impulse control issues manifest as spikes and discontinuities
     Hyperactivity captured through overlaid high-frequency sinusoidal fluctuations
     """
-    def adhd(y, window_length):
+    def adhd(t, y, window_length):
         window_length = np.random.randint(low=5, high=15, size=len(y))
         return savgol_filter(y.ravel(), window_length=window_length, polyorder=2) + 0.1*np.random.randn(len(y)) + np.sin(5*t)
 
@@ -478,7 +478,7 @@ class DSM(Emotion):
     Persistent high-frequency rumination
     """
 
-    def anxiety(y):
+    def anxiety(t, y):
         baseline = y + 0.1*np.random.uniform(-1, 1, len(y))
         spikes = np.maximum(-5, np.minimum(10*y, 5))  
         rumination = np.sin(10*t)  
@@ -520,13 +520,13 @@ class DSM(Emotion):
         return 0.7*no_empathy + 0.3*risk_taking
 
     # Bipolar / Cyclothymia
-    def manic_state(y):
+    def manic_state(t, y):
         goal_directed = 2*y* (1 + np.cos(t)) 
         risks = goal_directed + np.random.normal(0, 0.5, len(y)) 
         return 0.7*goal_directed + 0.3*risks
 
     def depressive_episode(y):
-        return depression(y) # Defined previously
+        return super().depression(y) # Defined previously
       
     # Trauma / Stress / Dissociation  
     def trauma(y):
@@ -536,7 +536,7 @@ class DSM(Emotion):
         return 0.6*avoidance + 0.3*fragments + 0.1*flashback
 
     # Psychosis continuum 
-    def prodromal(y):
+    def prodromal(t, y):
         suspicious = np.abs(np.minimum(y, 0))  
         magical = (y+0.5) * (1 + 0.5*np.sin(7*t))
         return 0.7*suspicious + 0.3*magical
@@ -610,7 +610,7 @@ class DSM(Emotion):
         
         return sum(agents) + spin_echo*severity
 
-    def racing_thoughts(x, frequency=30, n_threads=8):
+    def racing_thoughts(t, x, frequency=30, n_threads=8):
 
         threads = []
         for i in range(n_threads):
@@ -647,7 +647,7 @@ class DSM(Emotion):
             
         return overload + sensitivity
 
-    def restrictive_repetitive(x, severity=0.5):
+    def restrictive_repetitive(t, x, severity=0.5):
 
         # Looping, restrictive waveform shape    
         base = np.sin(np.mod(5*t, 2*np.pi)) 
